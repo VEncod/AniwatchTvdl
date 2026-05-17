@@ -1,4 +1,3 @@
-#@cantarellabots
 import os
 import random
 

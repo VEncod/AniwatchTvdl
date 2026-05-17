@@ -1,4 +1,3 @@
-#@cantarellabots
 from cantarella.core.proxy import get_random_proxy, get_proxy_dict
 import requests
 from bs4 import BeautifulSoup

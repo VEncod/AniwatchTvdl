@@ -1,4 +1,3 @@
-#@cantarellabots
 import asyncio
 import re
 from pyrogram import Client, filters
@@ -11,7 +10,6 @@ from cantarella.core.database import db
 from cantarella.core.images import get_random_image
 from config import *
 from .helpers import check_fsub, send_fsub_prompt
-#@cantarellabots
 # ─────────────────────────────────────────────
 #  Anime select & episode pagination
 # ─────────────────────────────────────────────

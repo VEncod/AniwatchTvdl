@@ -1,4 +1,3 @@
-#@cantarellabots
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InputMediaPhoto
 from cantarella.button import Button as InlineKeyboardButton

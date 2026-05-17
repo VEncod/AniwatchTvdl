@@ -34,8 +34,8 @@ Hᴇʟʟᴏ {mention}, ʜᴇʀᴇ ᴀʀᴇ ᴍʏ ғᴇᴀᴛᴜʀᴇs ᴀɴᴅ �
 Hᴇʀᴇ ɪs ɪɴғᴏʀᴍᴀᴛɪᴏɴ ᴀʙᴏᴜᴛ ᴍʏ ᴄʀᴇᴀᴛᴏʀs ᴀɴᴅ sᴘᴇᴄs:
 
 <blockquote><b>
-✦ Cʀᴇᴀᴛᴏʀ › <a href='https://t.me/cantarellabots'>CᴀɴᴛᴀʀᴇʟʟᴀBᴏᴛs</a>
-✦ Fᴏᴜɴᴅᴇʀ › <a href='https://t.me/cantarellabots'>CᴀɴᴛᴀʀᴇʟʟᴀBᴏᴛs</a>
+✦ Cʀᴇᴀᴛᴏʀ › Aɴɪᴍᴇ Bᴏᴛ
+✦ Fᴏᴜɴᴅᴇʀ › Aɴɪᴍᴇ Bᴏᴛ
 ✦ Dᴇᴠᴇʟᴏᴘᴇʀ › <a href='https://t.me/about_zani/117'>ZANI</a>
 ✦ Dᴀᴛᴀʙᴀsᴇ › <a href='https://www.mongodb.com/docs/'>MᴏɴɢᴏDB</a>
 ✦ Lɪʙʀᴀʀʏ › Kᴜʀɪɢʀᴀᴍ

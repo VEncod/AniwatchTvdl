@@ -1,4 +1,3 @@
-#@cantarellabots
 import re
 import asyncio
 from pyrogram import Client, filters

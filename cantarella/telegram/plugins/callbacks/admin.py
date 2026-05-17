@@ -1,4 +1,3 @@
-#@cantarellabots
 import re
 import time
 import asyncio

@@ -1,4 +1,3 @@
-#@cantarellabots
 from pyrogram.enums import ChatMemberStatus
 from pyrogram.errors import UserNotParticipant
 from cantarella.core.database import db

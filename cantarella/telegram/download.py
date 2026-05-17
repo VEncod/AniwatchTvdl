@@ -1,4 +1,3 @@
-#@cantarellabots
 from pyrogram.enums import ParseMode
 from pyrogram import Client
 from queue import Queue, Empty

@@ -1,4 +1,3 @@
-#@cantarellabots
 import random
 from config import RESPONSE_IMAGES
 

@@ -1,4 +1,3 @@
-#@cantarellabots
 from aiohttp import ClientSession
 from asyncio import sleep as asleep
 from random import choice
@@ -7,7 +6,6 @@ import re
 
 # Simple cache for AniList data
 ani_cache = {}
-#@cantarellabots
 # Dummy reporting utility
 class Report:
     async def report(self, message, level="info", log=True):
@@ -42,7 +40,7 @@ CAPTION_FORMAT = """
 ➥ Gᴇɴʀᴇs:- {genres}
 ➥ Aᴜᴅɪᴏ:- {audio}</i></blockquote>
 <b>✦━━━━━━━━━━━━━━━━━━━━━━━━✦</b>
-<b><i>⌬ Pᴏᴡᴇʀᴇᴅ ʙʏ:- @cantarellabots</i></b>
+
 """
 
 GENRES_EMOJI = {

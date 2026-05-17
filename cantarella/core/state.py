@@ -1,4 +1,3 @@
-#@cantarellabots
 # Global storage for URLs per user
 current_urls = {}
 user_episodes = {} # user_id -> {'anime_title': title, 'episodes': [...], 'url': url}

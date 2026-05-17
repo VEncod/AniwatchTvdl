@@ -1,4 +1,3 @@
-#@cantarellabots
 from pyrogram.types import InlineKeyboardButton as PyroButton
 from pyrogram.enums import ButtonStyle
 

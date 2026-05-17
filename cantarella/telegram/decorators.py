@@ -1,4 +1,3 @@
-#@cantarellabots
 from pyrogram.enums import ParseMode, ChatMemberStatus, ChatAction
 from pyrogram.errors import UserNotParticipant
 from pyrogram.types import InlineKeyboardMarkup, Message
@@ -30,7 +29,7 @@ def check_ban(func):
             if is_banned:
                 logger.debug(f"User {user_id} is banned")
                 keyboard = InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("Cᴏɴᴛᴀᴄᴛ ʜᴇʀᴇ...!!", url="https://t.me/cantarellabots")]]
+                    [[InlineKeyboardButton("Cᴏɴᴛᴀᴄᴛ Aᴅᴍɪɴ", url="https://t.me/V_Sbotmaker")]]
                 )
                 await message.reply_text(
                     "Wᴛғ ʏᴏᴜ ᴀʀᴇ ʙᴀɴɴᴇᴅ ғʀᴏᴍ ᴜsɪɴɢ ᴍᴇ ʙʏ ᴏᴜʀ ᴀᴅᴍɪɴ/ᴏᴡɴᴇʀ. Iғ ʏᴏᴜ ᴛʜɪɴᴋs ɪᴛ's ᴍɪsᴛᴀᴋᴇ ᴄʟɪᴄᴋ ᴏɴ ᴄᴏɴᴛᴀᴄᴛ ʜᴇʀᴇ...!!",

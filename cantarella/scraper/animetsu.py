@@ -1,4 +1,3 @@
-#@cantarellabots
 from cantarella.core.proxy import get_random_proxy, get_proxy_dict
 from curl_cffi import requests as c_requests
 import json

@@ -1,4 +1,3 @@
-#@cantarellabots
 from pyrogram import Client, filters
 from pyrogram.enums import ParseMode
 from pyrogram.types import InlineKeyboardMarkup, Message

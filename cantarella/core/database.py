@@ -1,4 +1,3 @@
-#@cantarellabots
 import motor.motor_asyncio
 import logging
 from datetime import datetime, date
