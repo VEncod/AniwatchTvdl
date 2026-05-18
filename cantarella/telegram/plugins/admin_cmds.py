@@ -153,14 +153,85 @@ async def handle_admins_list(client: Client, message):
 
     await message.reply(text, parse_mode=ParseMode.HTML)
 
-@Client.on_message(filters.private & filters.command("users"))
+@Client.on_message(filters.private & filters.command("users") & admin)
 async def handle_users_count(client: Client, message):
-    is_admin = await db.is_admin(message.from_user.id)
-    if message.from_user.id != OWNER_ID and not is_admin:
-        return await message.reply("<blockquote>❌ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ ɪꜱ ғᴏʀ ᴀᴅᴍɪɴɪꜱᴛʀᴀᴛᴏʀꜱ ᴏɴʟʏ.</blockquote>", parse_mode=ParseMode.HTML)
-
     count = await db.get_user_count()
-    await message.reply(f"<blockquote>📊 <b>ᴛᴏᴛᴀʟ ᴜꜱᴇʀꜱ:</b> <code>{count}</code></blockquote>", parse_mode=ParseMode.HTML)
+    auth_users = await db.list_authorized_users()
+    text = f"<blockquote>📊 <b>ᴛᴏᴛᴀʟ ʙᴏᴛ ᴜꜱᴇʀꜱ:</b> <code>{count}</code>\n"
+    text += f"🔓 <b>ᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴜꜱᴇʀꜱ:</b> <code>{len(auth_users)}</code></blockquote>"
+    await message.reply(text, parse_mode=ParseMode.HTML)
+
+
+# ══════════════════════════════════════════════════
+#  AUTHORIZED USER MANAGEMENT (can use bot without being admin)
+# ══════════════════════════════════════════════════
+
+@Client.on_message(filters.private & filters.command("add_user") & admin)
+async def handle_add_user(client: Client, message):
+    if len(message.command) < 2:
+        return await message.reply(
+            "<blockquote>❌ <b>ᴘʟᴇᴀꜱᴇ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴜꜱᴇʀ ɪᴅ.</b>\n\nᴜꜱᴀɢᴇ: <code>/add_user 123456789</code></blockquote>",
+            parse_mode=ParseMode.HTML
+        )
+    try:
+        user_id = int(message.command[1])
+    except ValueError:
+        return await message.reply("<blockquote>❌ ɪɴᴠᴀʟɪᴅ ᴜꜱᴇʀ ɪᴅ. ᴘʟᴇᴀꜱᴇ ᴘʀᴏᴠɪᴅᴇ ᴀ ɴᴜᴍᴇʀɪᴄ ɪᴅ.</blockquote>", parse_mode=ParseMode.HTML)
+
+    # Try to get user info
+    name = None
+    try:
+        user = await client.get_users(user_id)
+        name = user.first_name
+    except Exception:
+        pass
+
+    result = await db.add_authorized_user(user_id, name)
+    if result:
+        display_name = f"{name} ({user_id})" if name else str(user_id)
+        await message.reply(
+            f"<blockquote>✅ <b>ᴜꜱᴇʀ ᴀᴅᴅᴇᴅ ꜱᴜᴄᴄᴇꜱꜱғᴜʟʟʏ!</b>\n\n👤 <b>ᴜꜱᴇʀ:</b> <code>{display_name}</code>\n🔓 <b>ᴀᴄᴄᴇꜱꜱ:</b> ᴄᴀɴ ꜱᴇᴀʀᴄʜ & ᴅᴏᴡɴʟᴏᴀᴅ ᴀɴɪᴍᴇ</blockquote>",
+            parse_mode=ParseMode.HTML
+        )
+    else:
+        await message.reply("<blockquote>❌ ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴅᴅ ᴜꜱᴇʀ. ᴘʟᴇᴀꜱᴇ ᴛʀʏ ᴀɢᴀɪɴ.</blockquote>", parse_mode=ParseMode.HTML)
+
+
+@Client.on_message(filters.private & filters.command("remove_user") & admin)
+async def handle_remove_user(client: Client, message):
+    if len(message.command) < 2:
+        return await message.reply(
+            "<blockquote>❌ <b>ᴘʟᴇᴀꜱᴇ ᴘʀᴏᴠɪᴅᴇ ᴀ ᴜꜱᴇʀ ɪᴅ.</b>\n\nᴜꜱᴀɢᴇ: <code>/remove_user 123456789</code></blockquote>",
+            parse_mode=ParseMode.HTML
+        )
+    try:
+        user_id = int(message.command[1])
+    except ValueError:
+        return await message.reply("<blockquote>❌ ɪɴᴠᴀʟɪᴅ ᴜꜱᴇʀ ɪᴅ.</blockquote>", parse_mode=ParseMode.HTML)
+
+    result = await db.remove_authorized_user(user_id)
+    if result:
+        await message.reply(
+            f"<blockquote>✅ <b>ᴜꜱᴇʀ <code>{user_id}</code> ʀᴇᴍᴏᴠᴇᴅ ꜱᴜᴄᴄᴇꜱꜱғᴜʟʟʏ!</b>\n\nᴛʜᴇʏ ᴄᴀɴ ɴᴏ ʟᴏɴɢᴇʀ ᴜꜱᴇ ᴛʜᴇ ʙᴏᴛ.</blockquote>",
+            parse_mode=ParseMode.HTML
+        )
+    else:
+        await message.reply("<blockquote>❌ ᴜꜱᴇʀ ɴᴏᴛ ғᴏᴜɴᴅ ɪɴ ᴀᴜᴛʜᴏʀɪᴢᴇᴅ ʟɪꜱᴛ.</blockquote>", parse_mode=ParseMode.HTML)
+
+
+@Client.on_message(filters.private & filters.command("user_list") & admin)
+async def handle_list_authorized_users(client: Client, message):
+    users = await db.list_authorized_users()
+    if not users:
+        return await message.reply("<blockquote>📋 <b>ɴᴏ ᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴜꜱᴇʀꜱ ғᴏᴜɴᴅ.</b>\n\nᴜꜱᴇ <code>/add_user</code> ᴛᴏ ᴀᴅᴅ ᴜꜱᴇʀꜱ.</blockquote>", parse_mode=ParseMode.HTML)
+
+    text = "<blockquote>📋 <b>ᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴜꜱᴇʀꜱ:</b>\n\n"
+    for i, user in enumerate(users, 1):
+        name = user.get("name", "Unknown")
+        uid = user["_id"]
+        text += f"{i}. {name} — <code>{uid}</code>\n"
+    text += f"\n<b>ᴛᴏᴛᴀʟ:</b> {len(users)}</blockquote>"
+    await message.reply(text, parse_mode=ParseMode.HTML)
 
 @Client.on_message(filters.private & filters.command("stats"))
 async def handle_stats(client: Client, message):

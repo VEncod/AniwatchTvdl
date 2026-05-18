@@ -27,6 +27,7 @@ class Database:
             self.settings                   = self.db["user_settings"]
             self.mapped_channels            = self.db["mapped_channels"]
             self.favorites                  = self.db["favorites"]
+            self.authorized_users           = self.db["authorized_users"]
 
             # Backward-compat aliases
             self.col    = self.user_data
@@ -40,6 +41,7 @@ class Database:
             self.rqst_fsub_data = self.rqst_fsub_Channel_data = None
             self.sequence_mode = self.processed = self.settings = None
             self.col = self.users = self.admins = None
+            self.authorized_users = None
             logging.warning("MONGO_URL not set — database features will be disabled.")
 
     # ══════════════════════════════════════════════════════
@@ -375,8 +377,42 @@ class Database:
             logging.error(f"ᴇʀʀᴏʀ ꜰᴇᴛᴄʜɪɴɢ ᴅʙ ꜱᴛᴀᴛꜱ: {e}")
             return None
 
+    # ══════════════════════════════════════════════════
+    #  AUTHORIZED USERS (can use bot without being admin)
+    # ══════════════════════════════════════════════════
+    async def is_authorized_user(self, user_id: int) -> bool:
+        if self.authorized_users is None:
+            return False
+        return bool(await self.authorized_users.find_one({"_id": int(user_id)}))
 
-# ── Singleton instances ──────────────────────────────────────────────────────
+    async def add_authorized_user(self, user_id: int, name: str = None) -> bool:
+        if self.authorized_users is None:
+            return False
+        try:
+            await self.authorized_users.update_one(
+                {"_id": int(user_id)},
+                {"$set": {"_id": int(user_id), "name": name, "added_at": datetime.utcnow()}},
+                upsert=True
+            )
+            return True
+        except Exception as e:
+            logging.error(f"Error adding authorized user {user_id}: {e}")
+            return False
+
+    async def remove_authorized_user(self, user_id: int) -> bool:
+        if self.authorized_users is None:
+            return False
+        result = await self.authorized_users.delete_one({"_id": int(user_id)})
+        return result.deleted_count > 0
+
+    async def list_authorized_users(self) -> list:
+        if self.authorized_users is None:
+            return []
+        users = await self.authorized_users.find({}).to_list(None)
+        return users
+
+
+# ── Singleton instances ──────────────────────────────────────────────────────────────────
 db = Database(MONGO_URL)
 
 # Backward-compat alias so any existing code using `Seishiro.x` keeps working

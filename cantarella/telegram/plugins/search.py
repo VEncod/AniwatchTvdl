@@ -19,8 +19,9 @@ async def handle_url(client: Client, message):
 
     # --- Access Control ---
     is_admin = await db.is_admin(message.from_user.id)
-    if message.from_user.id != OWNER_ID and not is_admin:
-        return await message.reply("<blockquote>❌ <b>ᴏɴʟʏ ᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴀᴅᴍɪɴɪꜱᴛʀᴀᴛᴏʀꜱ ᴄᴀɴ ꜱᴇᴀʀᴄʜ ᴏʀ ᴅᴏᴡɴʟᴏᴀᴅ ᴀɴɪᴍᴇ.</b>\n\nᴄᴏɴᴛᴀᴄᴛ ᴛʜᴇ ᴏᴡɴᴇʀ ɪғ ʏᴏᴜ ᴛʜɪɴᴋ ᴛʜɪꜱ ɪꜱ ᴀ ᴍɪꜱᴛᴀᴋᴇ.</blockquote>", parse_mode=ParseMode.HTML)
+    is_authorized = await db.is_authorized_user(message.from_user.id)
+    if message.from_user.id != OWNER_ID and not is_admin and not is_authorized:
+        return await message.reply("<blockquote>❌ <b>ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ᴀᴜᴛʜᴏʀɪᴢᴇᴅ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ʙᴏᴛ.</b>\n\nᴄᴏɴᴛᴀᴄᴛ ᴛʜᴇ ᴏᴡɴᴇʀ ᴛᴏ ɢᴇᴛ ᴀᴄᴄᴇꜱꜱ.</blockquote>", parse_mode=ParseMode.HTML)
 
     is_animetsu = "animetsu.live" in url.lower() or "animetsu.bz" in url.lower()
 
