@@ -8,5 +8,4 @@ beautifulsoup4
 aiohttp
 motor
 guessit
-ffmpeg
 psutil
